@@ -1,0 +1,30 @@
+
+services:
+  envoy:
+    image: envoyproxy/envoy:v1.29-latest
+    container_name: envoy
+    ports:
+      - "8080:10000"  # Envoy listens here
+      - "9901:9901"   # Admin interface
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+    depends_on:
+      - websocket
+
+  websocket:
+    image: node:18
+    container_name: websocket
+    working_dir: /app
+    volumes:
+      - ./websocket-server.js:/app/websocket-server.js
+    command: >
+      sh -c "npm init -y &&
+             npm install ws &&
+             node websocket-server.js"
+    expose:
+      - "3000"
+
+  websocat:
+    image: ghcr.io/vi/websocat
+    container_name: websocat
+    entrypoint: tail -f /dev/null  # Keep container running so you can exec into it
