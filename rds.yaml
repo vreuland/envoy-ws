@@ -1,0 +1,11 @@
+resources:
+  - "@type": type.googleapis.com/envoy.config.route.v3.RouteConfiguration
+    name: local_route
+    virtual_hosts:
+    - name: backend
+      domains: ["*"]
+      routes:
+        - match: { prefix: "/ws1" }
+          route: { cluster: websocket_service1 }
+        - match: { prefix: "/ws2" }
+          route: { cluster: websocket_service2 }

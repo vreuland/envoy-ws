@@ -7,7 +7,9 @@ services:
       - "8080:10000"  # Envoy listens here
       - "9901:9901"   # Admin interface
     volumes:
-      - ./envoy.yaml:/etc/envoy/envoy.yaml
+      - ./envoy-dynamic.yaml:/etc/envoy/envoy.yaml
+      - ./rds.yaml:/etc/envoy/rds.yaml
+      - ./cds.yaml:/etc/envoy/cds.yaml
     depends_on:
       - websocket
 
